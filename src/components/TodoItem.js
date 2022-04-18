@@ -1,5 +1,4 @@
-import React, {useContext} from 'react'
-import { TodoContext } from '../context/TodoContext'
+import React from 'react'
 import '../style/TodoItem.css'
 
 function TodoItem({text, done, onComplete, onDelete}) {

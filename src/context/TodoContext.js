@@ -3,12 +3,6 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const TodoContext = createContext();
 
-const defaultArray = [
-    {todoMessage: 'Study React', done: false},
-    {todoMessage: 'Study CSS', done: false},
-    {todoMessage: 'Study HTML', done: false}
-  ];
-
 function TodoProvider ( props ) {
 
     const {
@@ -16,8 +10,10 @@ function TodoProvider ( props ) {
         saveTodos: setTodos, 
         loading, 
         error
-    } = useLocalStorage('TODOS_V1', defaultArray );
+        } = useLocalStorage('TODOS_V1', [] );
     const [searchValue, setSearchValue] = useState('');
+    const [modal, setModal] = useState(false);
+
     const todosPending = todos.filter( todo =>  !todo.done).length;
 
     let searchedTodos = [];
@@ -32,6 +28,15 @@ function TodoProvider ( props ) {
         else newArray[todoIndex].done = true;
         setTodos( newArray );
     } 
+
+    const addTodo = (text) => {
+        let newArray = [...todos];
+        newArray.push({
+            todoMessage: text,
+            done: false
+        });
+        setTodos( newArray );
+    }
 
     const deleteTodo = (text) => {
         let newArray = [...todos];
@@ -51,6 +56,9 @@ function TodoProvider ( props ) {
             searchedTodos,
             checkToogleTodo,
             deleteTodo,
+            modal,
+            setModal,
+            addTodo
         }}>
             {props.children}
         </TodoContext.Provider>
